@@ -8,7 +8,7 @@
 	{
 	    require_once 'include/db.php';
 
-		$user = getLesRepresentant($_POST['email']);
+		$user = connexionApplication($_POST['email']);
 
 	    if($user == null)
 	    {

@@ -10,11 +10,6 @@
 
 		require_once 'include/db.php';
 
-		if(!preg_match("#^0[1-68]([-. ]?[0-9]{2}){4}$#", $_POST['telephone']))
-		{
-			$errors['telephone'] = "Le numéro de téléphone n'est pas valide";
-		}
-
 		if(empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
 		{
 			$errors['email'] = "Votre email n'est pas valide";
@@ -28,35 +23,26 @@
 			}
 		}
 
-		if(empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm'])
-		{
-			$errors['password'] = "Vous devez rentrer un mot de passe valide";
-		}
-
 		/*************************************************************************************************************/
 		if(!preg_match ("#^[0-9]{5,5}$#",$_POST['code_postal']))
 		{
 			$errors['code_postal'] = "Vous devez rentrer un code postal valide";
 		}
 
-		if(!preg_match("#^0[1-68]([-. ]?[0-9]{2}){4}$#", $_POST['telephone']))
+		if(!preg_match("#^0[1-68]([-. ]?[0-9]{2}){4}$#", $_POST['telephone_entreprise']))
 		{
 			$errors['telephone_entreprise'] = "Le numéro de téléphone de l'entreprise n'est pas valide";
 		}
 
 		if(empty($errors))
 		{
-			insertRepresentant($_POST['nom'], $_POST['prenom'], $_POST['telephone'], $_POST['email'], $_POST['password']);
+			insertRepresentant($_POST['nom'], $_POST['prenom'], $_POST['email']);
 
 			insertAdherent($_POST['name_company'],
 						   $_POST['adresse'],
 						   $_POST['code_postal'],
 						   $_POST['ville'],
-						   $_POST['telephone_entreprise'],
-						   $_POST['activite'],
-						   $_POST['nombre_salaries'],
-						   $_POST['siret'],
-						   $_POST['chiffre_annuel']
+						   $_POST['telephone_entreprise']
 						   );
 
 			$_SESSION['flash']['success'] = 'La mise à jour de la base s\'est effectuée avec succès';
@@ -102,20 +88,8 @@
 						<input type="text" name="prenom" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label for=""><i class="fa fa-phone"></i>&nbsp;&nbsp;Téléphone : </label>
-						<input type="text" name="telephone" class="form-control" required>
-					</div>
-					<div class="form-group">
 						<label for=""><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;Email : </label>
 						<input type="text" name="email" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-key"></i>&nbsp;&nbsp;Mot de passe : </label>
-						<input type="password" name="password" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-check"></i>&nbsp;&nbsp;Confirmez votre mot de passe : </label>
-						<input type="password" name="password_confirm" class="form-control" required>
 					</div>
 				</div>
 				<div class="col">
@@ -140,22 +114,6 @@
 					<div class="form-group">
 						<label for=""><i class="fa fa-phone"></i>&nbsp;&nbsp;Téléphone : </label>
 						<input type="text" name="telephone_entreprise" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-briefcase"></i>&nbsp;&nbsp;Activité : </label>
-						<input type="text" name="activite" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-male"></i>&nbsp;&nbsp;Nombre de salariés : </label>
-						<input type="text" name="nombre_salaries" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Numéro de siret : </label>
-						<input type="text" name="siret" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for=""><i class="fa fa-eur"></i>&nbsp;&nbsp;Dernier Chiffre Annuel HT : </label>
-						<input type="text" name="chiffre_annuel" class="form-control" required>
 					</div>
 				</div>
 			</div>

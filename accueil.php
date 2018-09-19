@@ -8,7 +8,7 @@
 
 	$donnees = getAllInformation();
 
-	$droit = 1;
+	$droit = droitBdd($_SESSION['auth']->email);
 
 ?>
 <center>
@@ -16,17 +16,16 @@
 </center>
 <?php if($droit): ?>
 	</br></br>
-	<center>
-		<table style="width: 95%;" class="table table-striped">
+	<div class="container">
+		<table class="table table-striped">
 	  		<thead>
 			    <tr>
-			      <th scope="col">Entreprise</th>
-			      <th scope="col">Localisation</th>
-			      <th scope="col">Téléphone</th>
-			      <th scope="col">Activité</th>
-			      <th scope="col">Nombre de salariés</th>
-			      <th scope="col">Siret</th>
-			      <th scope="col">Chiffre d'Affaire</th>
+			      <th scope="col"><center><i class="fa fa-user"></i>&nbsp;Contact</center></th>
+			      <th scope="col"><center><i class="fa fa-building"></i>&nbsp;Entreprise</center></th>
+			      <th scope="col"><center><i class="fa fa-phone"></i>&nbsp;Téléphone</center></th>
+			      <th scope="col"><center><i class="fa fa-map-marker"></i>&nbsp;Adresse</center></th>
+			      <th scope="col"><center><i class="fa fa-address-card-o"></i>&nbsp;Code postal</center></th>
+			      <th scope="col"><center><i class="fa fa-building-o"></i>&nbsp;Ville</center></th>
 			    </tr>
 	  		</thead>
 		  	<tbody>
@@ -37,13 +36,12 @@
 
 		  				$representant = getNomRepresentant($res->nom);
 		  				echo "<tr>";
-		  				echo "<td align='center'>".$res->nom."<b style='font-size: 12px;'><i></br>Representant : <button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email </br> Téléphone : $representant->telephone'>".$representant->nom." ".$representant->prenom."</button></b></td>";
-		  				echo "<td>".$res->adresse."</br>".$res->code_postal."</br>".$res->ville."</td>";
+		  				echo "<td align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->nom." ".$representant->prenom."</button></td>";
+		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'>".$res->telephone."</td>";
-		  				echo "<td align='center'>".$res->activite."</td>";
-		  				echo "<td align='center'>".$res->nb_salaries."</td>";
-		  				echo "<td align='center'>".$res->num_siret."</td>";
-		  				echo "<td align='center'>".$res->dernier_CA_ht_annuel."</td>";
+		  				echo "<td align='center'>".$res->adresse."</td>";
+		  				echo "<td align='center'>".$res->code_postal."</td>";
+		  				echo "<td align='center'>".$res->ville."</td>";
 		  				echo "</tr>";
 
 		  				$i++;
@@ -66,7 +64,7 @@
 
 		  	</tbody>
 		</table>
-	</center>
+	</div>
 <?php else: ?>
 	</br>
 	</br>

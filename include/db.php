@@ -22,7 +22,7 @@
 
 		$req = $pdo->prepare('SELECT * FROM representant WHERE email = ?');
 
-	    $req->execute([$_POST['email']]);
+	    $req->execute([$email]); //avant c'etait $_POST['email'];
 	    $user = $req->fetch();
 
 	    return $user;
@@ -103,7 +103,7 @@
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$query = $pdo->prepare('SELECT id_representant FROM representant WHERE email = ?');
+		$query = $pdo->prepare('SELECT id_connexion FROM connexion WHERE email = ?');
 		
 		$query->execute([$email]);
 		
@@ -117,15 +117,14 @@
 		return false;
 	}
 
-	function insertRepresentant($nom, $prenom, $telephone, $email, $mot_de_passe)
+	function insertRepresentant($nom, $prenom, $email)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$query = $pdo->prepare("INSERT INTO representant SET nom = ?, prenom = ?, telephone = ?, email = ?, mot_de_passe = ?");
+		$query = $pdo->prepare("INSERT INTO representant SET nom = ?, prenom = ?, email = ?");
 
-		$mot_de_passe = password_hash($mot_de_passe, PASSWORD_BCRYPT);
 		
-		$query->execute([$nom, $prenom, $telephone, $email, $mot_de_passe]);
+		$query->execute([$nom, $prenom, $email]);
 
 
 		$req = $pdo->prepare("INSERT INTO adherent SET id_representant = (SELECT id_representant FROM representant WHERE id_representant=LAST_INSERT_ID());");
@@ -144,7 +143,7 @@
 	    $result = $req->fetch();
 	}
 
-	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone, $activite, $nb_salaries, $num_siret, $chiffre_annuel)
+	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone)
 	{
 		$pdo = connexionBaseDeDonnee();
 
@@ -153,11 +152,11 @@
 		$result = $reqp->fetch();
 
 		$query = $pdo->prepare("UPDATE adherent SET id_representant = ?, nom = ?, adresse = ?, code_postal = ?,
-			                    ville = ?, telephone = ?, activite = ?, nb_salaries = ?, num_siret = ?, dernier_CA_ht_annuel = ?
+			                    ville = ?, telephone = ?
 			                    WHERE id_representant = ?"
 							  );
 		
-		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $activite, $nb_salaries, $num_siret, $chiffre_annuel, $result->id_representant]);
+		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $result->id_representant]);
 	}
 
 	function getAllInformation()
@@ -173,7 +172,7 @@
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->prepare("SELECT representant.nom, representant.prenom, representant.telephone, representant.email 
+		$req = $pdo->prepare("SELECT representant.nom, representant.prenom, representant.email 
 			                  FROM representant 
 			                  INNER JOIN adherent 
 			                  ON representant.id_representant = adherent.id_representant 
@@ -187,4 +186,44 @@
 		return $result;
 	}
 
+	function connexionApplication($email)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$req = $pdo->prepare('SELECT * FROM connexion WHERE email = ?');
+
+	    $req->execute([$email]);
+	    $user = $req->fetch();
+
+	    return $user;
+	}
+
+	function insertConnexion($email, $mot_de_passe)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$mot_de_passe = password_hash($mot_de_passe, PASSWORD_BCRYPT);
+
+		$query = $pdo->prepare("INSERT INTO connexion SET email = ?, mot_de_passe = ?");
+
+		$query->execute([$email, $mot_de_passe]);
+	}
+
+	function droitBdd($email)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->prepare("SELECT membre FROM connexion WHERE email = ?");
+
+		$query->execute([$email]);
+
+		$droit = $query->fetch();
+
+		if($droit->membre == 1)
+		{
+			return true;
+		}
+
+		return false;
+	}
 ?>
