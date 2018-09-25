@@ -45,9 +45,16 @@
 						   $_POST['telephone_entreprise']
 						   );
 
-			$_SESSION['flash']['success'] = 'La mise à jour de la base s\'est effectuée avec succès';
-
-			header('Location: index.php');
+			if(isset($_SESSION['auth']))
+			{
+				$_SESSION['flash']['success'] = 'La mise à jour de la base s\'est effectuée avec succès';
+				header('Location: accueil.php');
+			}
+			else
+			{
+				$_SESSION['flash']['success'] = 'La mise à jour de la base s\'est effectuée avec succès';
+				echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
+			}
 
 			exit();
 		}

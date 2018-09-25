@@ -16,35 +16,6 @@
 		return $pdo;
 	}
 
-	function getLesRepresentant($email)
-	{
-		$pdo = connexionBaseDeDonnee();
-
-		$req = $pdo->prepare('SELECT * FROM representant WHERE email = ?');
-
-	    $req->execute([$email]); //avant c'etait $_POST['email'];
-	    $user = $req->fetch();
-
-	    return $user;
-	}
-
-	function getNomEntreprise($nom_representant)
-	{
-		$pdo = connexionBaseDeDonnee();
-
-		$req = $pdo->prepare('SELECT adherent.nom as nom_entreprise
-							  FROM adherent 
-							  INNER JOIN representant
-							  ON representant.id_representant = adherent.id_representant
-							  WHERE representant.nom = ?');
-		
-		$req->execute([$nom_representant]);
-
-		$result = $req->fetch();
-
-		return $result;
-	}
-
 	function getInformationEntreprise($nom_entreprise)
 	{
 		$pdo = connexionBaseDeDonnee();
@@ -56,18 +27,6 @@
 							  WHERE adherent.nom = ?');
 
 		$req->execute([$nom_entreprise]);
-
-	    return $req;
-	}
-
-	function getAllInformationEntreprise()
-	{
-		$pdo = connexionBaseDeDonnee();
-
-		$req = $pdo->query('SELECT adherent.nom as Entreprise, representant.nom as Representant
-							FROM adherent
-						    INNER JOIN representant
-					    	ON representant.id_representant = adherent.id_representant');
 
 	    return $req;
 	}
@@ -130,17 +89,6 @@
 		$req = $pdo->prepare("INSERT INTO adherent SET id_representant = (SELECT id_representant FROM representant WHERE id_representant=LAST_INSERT_ID());");
 
 		$req->execute();
-	}
-
-	function getIdRepresentant($nom)
-	{
-		$pdo = connexionBaseDeDonnee();
-
-		$req = $pdo->prepare('SELECT id_representant FROM representant WHERE nom = ?');
-
-	    $req->execute([$nom]);
-
-	    $result = $req->fetch();
 	}
 
 	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone)

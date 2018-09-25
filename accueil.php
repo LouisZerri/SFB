@@ -36,7 +36,7 @@
 
 		  				$representant = getNomRepresentant($res->nom);
 		  				echo "<tr>";
-		  				echo "<td align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->nom." ".$representant->prenom."</button></td>";
+		  				echo "<td align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->prenom." ".$representant->nom."</button></td>";
 		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'>".$res->telephone."</td>";
 		  				echo "<td align='center'>".$res->adresse."</td>";
