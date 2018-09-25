@@ -16,8 +16,8 @@
 </center>
 <?php if($droit): ?>
 	</br></br>
-	<div class="container">
-		<table class="table table-striped">
+	<center>
+		<table style="width: 95%; font-size: 15px;" class="table table-striped">
 	  		<thead>
 			    <tr>
 			      <th scope="col"><center><i class="fa fa-user"></i>&nbsp;Contact</center></th>
@@ -38,7 +38,7 @@
 
 		  				$representant = getNomRepresentant($res->telephone);
 		  				echo "<tr>";
-		  				echo "<td align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->prenom." ".$representant->nom."</button></td>";
+		  				echo "<td style='font-size:15px;' align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->prenom." ".$representant->nom."</button></td>";
 		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'>".$res->telephone."</td>";
 		  				echo "<td align='center'>".$res->adresse."</td>";
@@ -75,7 +75,7 @@
 
 		  	</tbody>
 		</table>
-	</div>
+	</center>
 <?php else: ?>
 	</br>
 	</br>
