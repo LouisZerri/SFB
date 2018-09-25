@@ -19,7 +19,6 @@
 	        $_SESSION['auth'] = $user;
 	        $_SESSION['flash']['success'] = 'Vous êtes maintenant connecté';
 	        header('Location: accueil.php');
-	        exit();
 	    }
 	    else
 	    {	
@@ -30,16 +29,17 @@
 
 </br>
 <div class="container">
-	<?php if(!empty($errors)): ?>
-		<div class="alert alert-danger">
-			<p>Vous n'avez pas rempli le formulaire correctement</p>
-			<ul>
-				<?php foreach ($errors as $error): ?>
-					<li><?= $error; ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	<?php endif; ?>
+		<?php if(isset($_SESSION['flash'])): ?>
+		  <?php foreach($_SESSION['flash'] as $type => $message): ?>
+			<div class="alert alert-<?= $type;?> alert-dismissible fade show" role="alert">
+			  <?= $message; ?>
+			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    		<span aria-hidden="true">&times;</span>
+	  		</button>
+			</div>
+		  <?php endforeach; ?>
+		  <?php unset($_SESSION['flash']); ?>
+		<?php endif; ?>
 	<center>
 		<img src="style/page.png">
 	</center>
