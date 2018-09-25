@@ -40,17 +40,17 @@
 		return $donnees->nb;
 	}
 
-	function companyExist($nom)
+	function bulletinRetourne($nom)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->prepare('SELECT nom FROM adherent WHERE nom = ?');
+		$req = $pdo->prepare('SELECT bulletin_retourne FROM adherent WHERE nom = ?');
 
 	    $req->execute([$nom]);
 
 	    $result = $req->fetch();
 
-	    if($result == null)
+	    if(empty($result->bulletin_retourne))
 	    {
 	    	return false;
 	    }
@@ -91,7 +91,7 @@
 		$req->execute();
 	}
 
-	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone)
+	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone, $bulletin)
 	{
 		$pdo = connexionBaseDeDonnee();
 
@@ -100,11 +100,11 @@
 		$result = $reqp->fetch();
 
 		$query = $pdo->prepare("UPDATE adherent SET id_representant = ?, nom = ?, adresse = ?, code_postal = ?,
-			                    ville = ?, telephone = ?
+			                    ville = ?, telephone = ?, bulletin_retourne = ?
 			                    WHERE id_representant = ?"
 							  );
 		
-		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $result->id_representant]);
+		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $bulletin, $result->id_representant]);
 	}
 
 	function getAllInformation()
@@ -116,7 +116,7 @@
 		return $req;
 	}
 
-	function getNomRepresentant($nom_entreprise)
+	function getNomRepresentant($numero_tel)
 	{
 		$pdo = connexionBaseDeDonnee();
 
@@ -124,10 +124,10 @@
 			                  FROM representant 
 			                  INNER JOIN adherent 
 			                  ON representant.id_representant = adherent.id_representant 
-			                  WHERE adherent.nom = ?"
+			                  WHERE adherent.telephone = ?"
 			                );
 
-		$req->execute([$nom_entreprise]);
+		$req->execute([$numero_tel]);
 
 		$result = $req->fetch();
 

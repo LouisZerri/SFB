@@ -7,7 +7,7 @@
 	if(isset($_GET['entreprise']))
 	{
 
-		$bool = companyExist($_GET['entreprise']);
+		$bool = bulletinRetourne($_GET['entreprise']);
 
 		$result = getInformationEntreprise($_GET['entreprise']);
 
@@ -51,7 +51,7 @@
 		else
 		{
 			echo "<WebService>";
-				echo "<Response>L'entreprise '".$_GET['entreprise']."' n'existe pas dans la base</Response>";
+				echo "<Response>False</Response>";
 			echo "</WebService>"; 
 		}
 		

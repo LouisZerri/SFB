@@ -34,6 +34,11 @@
 			$errors['telephone_entreprise'] = "Le numéro de téléphone de l'entreprise n'est pas valide";
 		}
 
+		if($_POST['bulletin'] == "")
+		{
+			$_POST['bulletin'] = null;
+		}
+
 		if(empty($errors))
 		{
 			insertRepresentant($_POST['nom'], $_POST['prenom'], $_POST['email']);
@@ -42,7 +47,8 @@
 						   $_POST['adresse'],
 						   $_POST['code_postal'],
 						   $_POST['ville'],
-						   $_POST['telephone_entreprise']
+						   $_POST['telephone_entreprise'],
+						   $_POST['bulletin']
 						   );
 
 			if(isset($_SESSION['auth']))
@@ -121,6 +127,10 @@
 					<div class="form-group">
 						<label for=""><i class="fa fa-phone"></i>&nbsp;&nbsp;Téléphone : </label>
 						<input type="text" name="telephone_entreprise" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label for=""><i class="fa fa-file"></i>&nbsp;&nbsp;Bulletin retourné (ne rien mettre si pas recu) : </label>
+						<input type="text" name="bulletin" class="form-control" placeholder="Exemple : Recu le JJ/MM/AA">
 					</div>
 				</div>
 			</div>

@@ -26,6 +26,8 @@
 			      <th scope="col"><center><i class="fa fa-map-marker"></i>&nbsp;Adresse</center></th>
 			      <th scope="col"><center><i class="fa fa-address-card-o"></i>&nbsp;Code postal</center></th>
 			      <th scope="col"><center><i class="fa fa-building-o"></i>&nbsp;Ville</center></th>
+			      <th scope="col"><center><i class="fa fa-file"></i>&nbsp;Bulletin retourné</center></th>
+
 			    </tr>
 	  		</thead>
 		  	<tbody>
@@ -34,7 +36,7 @@
 		  			while($res = $donnees->fetch())
 		  			{
 
-		  				$representant = getNomRepresentant($res->nom);
+		  				$representant = getNomRepresentant($res->telephone);
 		  				echo "<tr>";
 		  				echo "<td align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->prenom." ".$representant->nom."</button></td>";
 		  				echo "<td align='center'>".$res->nom."</td>";
@@ -42,6 +44,15 @@
 		  				echo "<td align='center'>".$res->adresse."</td>";
 		  				echo "<td align='center'>".$res->code_postal."</td>";
 		  				echo "<td align='center'>".$res->ville."</td>";
+		  				if($res->bulletin_retourne == null)
+		  				{
+		  					echo "<td align='center'>Pas encore recu</td>";
+		  				}
+		  				else
+		  				{
+		  					echo "<td align='center'>".$res->bulletin_retourne."</td>";
+		  				}
+
 		  				echo "</tr>";
 
 		  				$i++;
