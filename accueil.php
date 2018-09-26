@@ -32,20 +32,26 @@
 <center>
 	<img src="style/page.png">
 </center>
+<div class="container">
+	<div class="form-group">
+		<label for="">Filtrer sur le nom du contact : </label>
+		<input class="form-control" type="text" name="category" id="categoryFilter" placeholder="Trouver un contact">
+	</div>
+</div>
 <?php if($droit): ?>
-	</br></br>
+	</br>
 	<center>
 		<table style="width: 95%; font-size: 15px;" class="table table-striped">
 	  		<thead>
 			    <tr>
 			      <th scope="col"><center>Contact</center></th>
+			      <th scope="col"><center>Email</center></th>
 			      <th scope="col"><center>Entreprise</center></th>
 			      <th scope="col"><center>Téléphone</center></th>
 			      <th scope="col"><center>Adresse</center></th>
-			      <th scope="col"><center>Code postal</center></th>
+			      <th scope="col"><center>CP</center></th>
 			      <th scope="col"><center>Ville</center></th>
 			      <th scope="col"><center>Bulletin</center></th>
-
 			    </tr>
 	  		</thead>
 		  	<tbody>
@@ -55,8 +61,9 @@
 		  			{
 
 		  				$representant = getNomRepresentant($res->telephone);
-		  				echo "<tr>";
-		  				echo "<td style='font-size:15px;' align='center'><button class='btn btn-light' id='pop$i' data-toggle='popover' data-trigger='focus' title='Informations complementaires' data-content='Email : $representant->email'>".$representant->prenom." ".$representant->nom."</button></td>";
+		  				echo "<tr id='filter'>";
+		  				echo "<td align='center'><button class='btn btn-light'>".$representant->prenom." ".$representant->nom."</button></td>";
+		  				echo "<td align='center'>".$representant->email."</td>";
 		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'>".$res->telephone."</td>";
 		  				echo "<td align='center'>".$res->adresse."</td>";
@@ -74,23 +81,8 @@
 		  				echo "</tr>";
 
 		  				$i++;
-		  				?>
-		  				<script>
-							$(function () {
-								$('#pop1').popover({
-						    		container: 'body',
-						    		html: true
-						  		})
-						  		$('#pop<?= $i ?>').popover({
-						    		container: 'body',
-						    		html: true
-						  		})
-							})
-						</script>
-						<?php
 		  			}
-		  			?>
-
+		  		?>
 		  	</tbody>
 		</table>
 	</center>
