@@ -6,9 +6,27 @@
 
 	require "include/db.php";
 
-	$donnees = getAllInformation();
-
+	$perPage = 5;
+ 
 	$droit = droitBdd($_SESSION['auth']->email);
+
+	$nbAd = countElement();
+
+	$nombreAdherent = $nbAd->nb_adherent;
+
+	$nbPage = ceil($nombreAdherent / $perPage);
+
+	if(isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $nbPage)
+	{
+		$cPage = $_GET['page'];
+
+	}
+	else
+	{
+		$cPage = 1;
+	}
+
+	$donnees = getAllInformation($cPage,$perPage);
 
 ?>
 <center>
@@ -20,13 +38,13 @@
 		<table style="width: 95%; font-size: 15px;" class="table table-striped">
 	  		<thead>
 			    <tr>
-			      <th scope="col"><center><i class="fa fa-user"></i>&nbsp;Contact</center></th>
-			      <th scope="col"><center><i class="fa fa-building"></i>&nbsp;Entreprise</center></th>
-			      <th scope="col"><center><i class="fa fa-phone"></i>&nbsp;Téléphone</center></th>
-			      <th scope="col"><center><i class="fa fa-map-marker"></i>&nbsp;Adresse</center></th>
-			      <th scope="col"><center><i class="fa fa-address-card-o"></i>&nbsp;Code postal</center></th>
-			      <th scope="col"><center><i class="fa fa-building-o"></i>&nbsp;Ville</center></th>
-			      <th scope="col"><center><i class="fa fa-file"></i>&nbsp;Bulletin retourné</center></th>
+			      <th scope="col"><center>Contact</center></th>
+			      <th scope="col"><center>Entreprise</center></th>
+			      <th scope="col"><center>Téléphone</center></th>
+			      <th scope="col"><center>Adresse</center></th>
+			      <th scope="col"><center>Code postal</center></th>
+			      <th scope="col"><center>Ville</center></th>
+			      <th scope="col"><center>Bulletin</center></th>
 
 			    </tr>
 	  		</thead>
@@ -76,6 +94,23 @@
 		  	</tbody>
 		</table>
 	</center>
+</br></br>
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<?php for($i = 1; $i <= $nbPage; $i++): ?>
+				<?php if($i == $cPage): ?>
+					<li class="page-item">
+						<a style="color: black; background-color: #689E75;" class="page-link" href="..\SFB\accueil.php?page=<?= $i ?>"><?= $i ?></a>
+					</li>
+				<?php else: ?>
+					<li class="page-item">
+						<a style="color: black;" class="page-link" href="..\SFB\accueil.php?page=<?= $i ?>"><?= $i ?></a>
+					</li>
+				<?php endif; ?>
+			<?php endfor; ?>
+		</ul>
+	</nav>
+</br></br>
 <?php else: ?>
 	</br>
 	</br>

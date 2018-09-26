@@ -7,7 +7,7 @@
 	
 	function connexionBaseDeDonnee()
 	{
-		$pdo = new PDO('mysql:host=localhost;dbname=argefo;charset=utf8', 'root', 'angeline');
+		$pdo = new PDO('mysql:host=localhost;dbname=base_argefo;charset=utf8', 'root', 'angeline');
 
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -107,11 +107,11 @@
 		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $bulletin, $result->id_representant]);
 	}
 
-	function getAllInformation()
+	function getAllInformation($cpage,$pagination)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->query("SELECT * FROM adherent");
+		$req = $pdo->query("SELECT * FROM adherent LIMIT ".(($cpage - 1)*$pagination).",$pagination");
 
 		return $req;
 	}
@@ -174,4 +174,16 @@
 
 		return false;
 	}
+
+	function countElement()
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->query("SELECT count(id_adherent) as nb_adherent FROM adherent");
+
+		$res = $query->fetch();
+		
+		return $res;
+	}
+
 ?>
