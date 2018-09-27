@@ -32,12 +32,6 @@
 <center>
 	<img src="style/page.png">
 </center>
-<div class="container">
-	<div class="form-group">
-		<label for="">Filtrer sur le nom du contact : </label>
-		<input class="form-control" type="text" name="category" id="categoryFilter" placeholder="Trouver un contact">
-	</div>
-</div>
 <?php if($droit): ?>
 	</br>
 	<center>
@@ -61,7 +55,7 @@
 		  			{
 
 		  				$representant = getNomRepresentant($res->telephone);
-		  				echo "<tr id='filter'>";
+		  				echo "<tr>";
 		  				echo "<td align='center'><button class='btn btn-light'>".$representant->prenom." ".$representant->nom."</button></td>";
 		  				echo "<td align='center'>".$representant->email."</td>";
 		  				echo "<td align='center'>".$res->nom."</td>";

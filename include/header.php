@@ -9,6 +9,13 @@
 	<link rel="stylesheet" type="text/css" href="style/font-awesome.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
+	<style type="text/css">
+		.highlighted
+		{
+			background-color: #2BA6CB;
+			color: #FFF;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
