@@ -33,6 +33,9 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
     		<ul class="navbar-nav">
     			<?php if(isset($_SESSION['auth'])): ?>
+    				<li class="nav-item active">
+	        			<a class="nav-link" href="accueil.php"><span class="fa fa-home" style="color:#808080;"></span>&nbsp;&nbsp;Accueil</a>
+	      			</li>
 	      			<li class="nav-item active">
 	        			<a class="nav-link" href="https://www.sfbois.com/"><span class="fa fa-tree" style="color:#689E75;"></span>&nbsp;&nbsp;Notre site officiel</a>
 	      			</li>
