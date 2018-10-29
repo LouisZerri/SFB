@@ -6,7 +6,7 @@
 
 	require "include/db.php";
 
-	$perPage = 5;
+	$perPage = 15;
  
 	$droit = droitBdd($_SESSION['auth']->email);
 
