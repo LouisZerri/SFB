@@ -16,7 +16,6 @@
 		}
 		else
 		{
-			
 			if(checkEmail($_POST['email']))
 			{
 				$errors['email'] = "Cet email est déjà utilisé pour un autre compte";
@@ -41,15 +40,17 @@
 
 		if(empty($errors))
 		{
-			insertRepresentant($_POST['nom'], $_POST['prenom'], $_POST['email']);
+            $newRepresentantId = insertRepresentant($_POST['nom'], $_POST['prenom'], $_POST['email']);
 
-			insertAdherent($_POST['name_company'],
-						   $_POST['adresse'],
-						   $_POST['code_postal'],
-						   $_POST['ville'],
-						   $_POST['telephone_entreprise'],
-						   $_POST['bulletin']
-						   );
+            insertAdherent($newRepresentantId,
+                $_POST['name_company'],
+                $_POST['adresse'],
+                $_POST['code_postal'],
+                $_POST['ville'],
+                $_POST['telephone_entreprise'],
+                $_POST['siret'],
+                $_POST['bulletin']
+            );
 
 			if(isset($_SESSION['auth']))
 			{
@@ -127,6 +128,10 @@
 					<div class="form-group">
 						<label for=""><i class="fa fa-phone"></i>&nbsp;&nbsp;Téléphone : </label>
 						<input type="text" name="telephone_entreprise" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label for=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;Siret : </label>
+						<input type="text" name="siret" class="form-control" value="<?= $adherent->siret ?>" required>
 					</div>
 					<div class="form-group">
 						<label for=""><i class="fa fa-file"></i>&nbsp;&nbsp;Bulletin retourné (ne rien mettre si pas recu) : </label>

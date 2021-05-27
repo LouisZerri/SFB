@@ -38,14 +38,16 @@
 		<table style="width: 95%; font-size: 15px;" class="table table-striped">
 	  		<thead>
 			    <tr>
+			      <th scope="col"><center>Entreprise</center></th>
 			      <th scope="col"><center>Contact</center></th>
 			      <th scope="col"><center>Email</center></th>
-			      <th scope="col"><center>Entreprise</center></th>
 			      <th scope="col"><center>Téléphone</center></th>
 			      <th scope="col"><center>Adresse</center></th>
 			      <th scope="col"><center>CP</center></th>
 			      <th scope="col"><center>Ville</center></th>
+			      <th scope="col"><center>Siret</center></th>
 			      <th scope="col"><center>Bulletin</center></th>
+			      <th scope="col"><center>Actions</center></th>
 			    </tr>
 	  		</thead>
 		  	<tbody>
@@ -56,13 +58,14 @@
 
 		  				$representant = getNomRepresentant($res->telephone);
 		  				echo "<tr>";
+		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'><button class='btn btn-light'>".$representant->prenom." ".$representant->nom."</button></td>";
 		  				echo "<td align='center'>".$representant->email."</td>";
-		  				echo "<td align='center'>".$res->nom."</td>";
 		  				echo "<td align='center'>".$res->telephone."</td>";
 		  				echo "<td align='center'>".$res->adresse."</td>";
 		  				echo "<td align='center'>".$res->code_postal."</td>";
 		  				echo "<td align='center'>".$res->ville."</td>";
+		  				echo "<td align='center'>".$res->siret."</td>";
 		  				if($res->bulletin_retourne == null)
 		  				{
 		  					echo "<td align='center'>Pas encore recu</td>";
@@ -71,7 +74,7 @@
 		  				{
 		  					echo "<td align='center'>".$res->bulletin_retourne."</td>";
 		  				}
-
+		  				echo "<td align='center'><a style='color: black; text-decoration: none;' href=modifier_adherent.php?id=".$res->id_representant."><i class='fa fa-pencil'></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: black; text-decoration: none;' href=supprimer_adherent.php?id=".$res->id_adherent."><i class='fa fa-trash'></i></a></td>";
 		  				echo "</tr>";
 
 		  				$i++;
@@ -86,11 +89,11 @@
 			<?php for($i = 1; $i <= $nbPage; $i++): ?>
 				<?php if($i == $cPage): ?>
 					<li class="page-item">
-						<a style="color: black; background-color: #689E75;" class="page-link" href="..\SFB\accueil.php?page=<?= $i ?>"><?= $i ?></a>
+						<a style="color: black; background-color: #689E75;" class="page-link" href="accueil.php?page=<?= $i ?>"><?= $i ?></a>
 					</li>
 				<?php else: ?>
 					<li class="page-item">
-						<a style="color: black;" class="page-link" href="..\SFB\accueil.php?page=<?= $i ?>"><?= $i ?></a>
+						<a style="color: black;" class="page-link" href="accueil.php?page=<?= $i ?>"><?= $i ?></a>
 					</li>
 				<?php endif; ?>
 			<?php endfor; ?>

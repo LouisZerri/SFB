@@ -1,0 +1,12 @@
+RewriteEngine On
+
+RewriteRule ^connexion$ index.php
+RewriteRule ^accueil$ accueil.php
+RewriteRule ^register$ register.php
+RewriteRule ^webservice$ questionner.php
+RewriteRule ^deconnexion$ logout.php
+RewriteRule ^accueil/pages/([0-9]+)$ accueil.php?page=$1
+RewriteRule ^filtrer-les-adherents$ filtre_adherent.php
+
+
+

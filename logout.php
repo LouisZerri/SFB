@@ -6,5 +6,5 @@
 
 	$_SESSION['flash']['success'] = 'Vous êtes maintenant déconnecté';
 	
-	header('Location: index.php');
+	header('Location: connexion');
 ?>

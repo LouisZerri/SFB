@@ -7,7 +7,8 @@
 	
 	function connexionBaseDeDonnee()
 	{
-		$pdo = new PDO('mysql:host=localhost;dbname=base_argefo;charset=utf8', 'root', 'angeline');
+		$pdo = new PDO('mysql:host=localhost;port=3308;dbname=base_argefo;charset=utf8', 'root', '');
+		//$pdo = new PDO('mysql:host=localhost;dbname=sfb_base_argefo;charset=utf8', 'root', 'xsys6844');
 
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -16,7 +17,7 @@
 		return $pdo;
 	}
 
-	function getInformationEntreprise($nom_entreprise)
+	function getInformationEntreprise($siret)
 	{
 		$pdo = connexionBaseDeDonnee();
 
@@ -24,9 +25,9 @@
 							  FROM adherent
 							  INNER JOIN representant
 							  ON representant.id_representant = adherent.id_representant
-							  WHERE adherent.nom = ?');
+							  WHERE adherent.siret = ?');
 
-		$req->execute([$nom_entreprise]);
+		$req->execute([$siret]);
 
 	    return $req;
 	}
@@ -34,19 +35,24 @@
 	function countLigne($table)
 	{
 		$pdo = connexionBaseDeDonnee();
+
 		$requete = "SELECT count(*) as nb FROM ".$table;
+		
 		$req = $pdo->query($requete);
+		
 		$donnees = $req->fetch();
+		
 		return $donnees->nb;
 	}
 
-	function bulletinRetourne($nom)
+	//On teste si la personne est adhérent à la SFB en testant sur les bulletins retourné
+	function bulletinRetourne($siret)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->prepare('SELECT bulletin_retourne FROM adherent WHERE nom = ?');
+		$req = $pdo->prepare('SELECT bulletin_retourne FROM adherent WHERE siret = ?');
 
-	    $req->execute([$nom]);
+	    $req->execute([$siret]);
 
 	    $result = $req->fetch();
 
@@ -56,6 +62,25 @@
 	    }
 
 	    return true;
+	}
+
+	//A remplacer si on teste si la personne est adherente ou non seulement en sachant si elle est dans la base de donnée ou pas
+	function isMember($siret)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$req = $pdo->prepare('SELECT id_adherent FROM adherent WHERE siret = ?');
+
+		$req->execute([$siret]);
+
+		$result = $req->fetch();
+
+		if($result)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	function checkEmail($email)
@@ -80,38 +105,28 @@
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$query = $pdo->prepare("INSERT INTO representant SET nom = ?, prenom = ?, email = ?");
+        	$query = $pdo->prepare("INSERT INTO representant (nom, prenom, email) VALUES (?, ?, ?)");
 
-		
 		$query->execute([$nom, $prenom, $email]);
 
-
-		$req = $pdo->prepare("INSERT INTO adherent SET id_representant = (SELECT id_representant FROM representant WHERE id_representant=LAST_INSERT_ID());");
-
-		$req->execute();
+        	return (int)($pdo->query("SELECT LAST_INSERT_ID()")->fetchColumn());
 	}
 
-	function insertAdherent($nom_entreprise, $adresse, $code_postal, $ville, $telephone, $bulletin)
+	function insertAdherent($representantId, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $siret, $bulletin)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$reqp = $pdo->query("SELECT id_representant FROM adherent ORDER BY id_representant DESC LIMIT 1");
-
-		$result = $reqp->fetch();
-
-		$query = $pdo->prepare("UPDATE adherent SET id_representant = ?, nom = ?, adresse = ?, code_postal = ?,
-			                    ville = ?, telephone = ?, bulletin_retourne = ?
-			                    WHERE id_representant = ?"
-							  );
+		$query = $pdo->prepare("INSERT INTO adherent (id_representant, nom, adresse, code_postal, ville, 
+            telephone, siret, bulletin_retourne) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		
-		$query->execute([$result->id_representant, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $bulletin, $result->id_representant]);
+		$query->execute([$representantId, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $siret, $bulletin]);
 	}
 
 	function getAllInformation($cpage,$pagination)
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->query("SELECT * FROM adherent LIMIT ".(($cpage - 1)*$pagination).",$pagination");
+		$req = $pdo->query("SELECT * FROM adherent ORDER BY nom ASC LIMIT ".(($cpage - 1)*$pagination).",$pagination");
 
 		return $req;
 	}
@@ -120,7 +135,7 @@
 	{
 		$pdo = connexionBaseDeDonnee();
 
-		$req = $pdo->prepare("SELECT representant.nom, representant.prenom, representant.email 
+		$req = $pdo->prepare("SELECT representant.id_representant as id_representant, representant.nom, representant.prenom, representant.email 
 			                  FROM representant 
 			                  INNER JOIN adherent 
 			                  ON representant.id_representant = adherent.id_representant 
@@ -186,4 +201,66 @@
 		return $res;
 	}
 
+	function recuperationAdherentById($id)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->prepare("SELECT representant.nom as nom_representant, prenom, email, adherent.nom as nom_adherent, adresse, code_postal, ville, telephone, siret, bulletin_retourne 
+								FROM representant 
+								INNER JOIN adherent 
+								ON representant.id_representant = adherent.id_representant 
+								WHERE representant.id_representant = ?");
+		$query->execute([$id]);
+
+		$res = $query->fetch();
+
+		return $res;
+	}
+
+	function updateAdherent($id, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $siret, $bulletin)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->prepare("UPDATE adherent SET id_representant = ?, nom = ?, adresse = ?, code_postal = ?, ville = ?, telephone = ?, siret = ?, bulletin_retourne = ? WHERE id_representant = ?");
+
+		$query->execute([$id, $nom_entreprise, $adresse, $code_postal, $ville, $telephone, $siret, $bulletin, $id]);
+	}
+
+	function updateRepresentant($id, $nom, $prenom, $email)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->prepare("UPDATE representant SET nom = ?, prenom = ?, email = ? WHERE id_representant = ?");
+
+		$query->execute([$nom, $prenom, $email, $id]);
+	}
+
+	function getInformationForFilter()
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query = $pdo->prepare("SELECT representant.id_representant as id_representant, representant.nom as nom_representant, prenom, email, adherent.nom as nom_adherent, adresse, code_postal, ville, telephone, siret, bulletin_retourne 
+								FROM representant 
+								INNER JOIN adherent 
+								ON representant.id_representant = adherent.id_representant ORDER BY adherent.nom ASC");
+		$query->execute();
+
+		$res = $query->fetchAll();
+
+		return $res;
+	}
+
+	function deleteAdherent($id)
+	{
+		$pdo = connexionBaseDeDonnee();
+
+		$query1 = $pdo->prepare("DELETE FROM adherent WHERE id_representant = ?");
+
+		$query2 = $pdo->prepare("DELETE FROM representant WHERE id_representant = ?");
+
+		$query1->execute([$id]);
+
+		$query2->execute([$id]);
+
+	}
 ?>

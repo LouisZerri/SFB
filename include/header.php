@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>SFB - Syndicat de la Filière Bois</title>
+	<link rel="icon" href="style/logo.ico" />
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -20,12 +21,12 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<?php if(isset($_SESSION['auth'])): ?>
-			<a class="navbar-brand" href="accueil.php">
+			<a class="navbar-brand" href="accueil">
 		    	<img src="style/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""/>
 		    	<span style="color:#689E75"><span style="color:#716F70">S</span>yndicat de la <span style="color:#716F70">F</span>ilière <span style="color:#716F70">B</span>ois</span>
 			</a>
 		<?php else: ?>
-			<a class="navbar-brand" href="index.php">
+			<a class="navbar-brand" href="connexion">
 		    	<img src="style/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""/>
 		    	<span style="color:#689E75"><span style="color:#716F70">S</span>yndicat de la <span style="color:#716F70">F</span>ilière <span style="color:#716F70">B</span>ois</span>
 			</a>
@@ -34,29 +35,32 @@
     		<ul class="navbar-nav">
     			<?php if(isset($_SESSION['auth'])): ?>
     				<li class="nav-item active">
-	        			<a class="nav-link" href="accueil.php"><span class="fa fa-home" style="color:#808080;"></span>&nbsp;&nbsp;Accueil</a>
+	        			<a class="nav-link" href="accueil"><span class="fa fa-home" style="color:#808080;"></span>&nbsp;&nbsp;Accueil</a>
 	      			</li>
 	      			<li class="nav-item active">
 	        			<a class="nav-link" href="https://www.sfbois.com/"><span class="fa fa-tree" style="color:#689E75;"></span>&nbsp;&nbsp;Notre site officiel</a>
 	      			</li>
 	      			<li class="nav-item active">
-			        	<a class="nav-link" href="register.php"><span class="fa fa-plus" style="color:#e51616;"></span>&nbsp;&nbsp;Ajouter un adhérent</a>
+			        	<a class="nav-link" href="register"><span class="fa fa-plus" style="color:#e51616;"></span>&nbsp;&nbsp;Ajouter un adhérent</a>
 			      	</li>
 			      	<li class="nav-item active">
-	        			<a class="nav-link" href="questionner.php"><span class="fa fa-code"style="color:purple;"></span>&nbsp;&nbsp;Interroger le Web Service</a>
+			        	<a class="nav-link" href="filtrer-les-adherents"><span class="fa fa-filter" style="color:#e51616;"></span>&nbsp;&nbsp;Filtrer les adhérents</a>
+			      	</li>
+			      	<li class="nav-item active">
+	        			<a class="nav-link" href="webservice"><span class="fa fa-code"style="color:purple;"></span>&nbsp;&nbsp;Interroger le Web Service</a>
 	      			</li>
 	      			<li class="nav-item active">
-	        			<a class="nav-link" href="logout.php"><span class="fa fa-sign-out"style="color:#e51616;"></span>&nbsp;&nbsp;<b>Deconnexion</b></a>
+	        			<a class="nav-link" href="deconnexion"><span class="fa fa-sign-out"style="color:#e51616;"></span>&nbsp;&nbsp;<b>Deconnexion</b></a>
 	      			</li>
     			<?php else: ?>
 	      			<li class="nav-item active">
 	        			<a class="nav-link" href="https://www.sfbois.com/"><span class="fa fa-tree" style="color:#689E75;"></span>&nbsp;&nbsp;Notre site officiel</a>
 	      			</li>
 	      			<li class="nav-item active">
-			        	<a class="nav-link" href="register.php"><span class="fa fa-plus" style="color:#e51616;"></span>&nbsp;&nbsp;Ajouter un adhérent</a>
+			        	<a class="nav-link" href="register"><span class="fa fa-plus" style="color:#e51616;"></span>&nbsp;&nbsp;Ajouter un adhérent</a>
 			      	</li>
 			      	<li class="nav-item active">
-			        	<a class="nav-link" href="index.php"><span class="fa fa-sign-in" style="color:#e516c5;"></span>&nbsp;&nbsp;<b>Se connecter</b></a>
+			        	<a class="nav-link" href="connexion"><span class="fa fa-sign-in" style="color:#e516c5;"></span>&nbsp;&nbsp;<b>Se connecter</b></a>
 			      	</li>
 			     <?php endif; ?>
     		</ul>

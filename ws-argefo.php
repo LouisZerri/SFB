@@ -4,12 +4,13 @@
 
 	require "include/db.php";
 
-	if(isset($_GET['entreprise']))
+	if(isset($_GET['siret']))
 	{
 
-		$bool = bulletinRetourne($_GET['entreprise']);
+		//$bool = bulletinRetourne($_GET['siret']);
+		$bool = isMember($_GET['siret']);
 
-		$result = getInformationEntreprise($_GET['entreprise']);
+		$result = getInformationEntreprise($_GET['siret']);
 
 		$num = countLigne("adherent");
 
